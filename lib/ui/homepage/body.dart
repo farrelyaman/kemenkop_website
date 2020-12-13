@@ -5,10 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../data_struc.dart';
 
 class HomeBody extends StatefulWidget{
-  final List<ArticleData> data;
-
-  HomeBody({Key key, this.data}): super(key: key);
-
   _HomeBodyState createState()=> _HomeBodyState();
 }
 
@@ -18,8 +14,8 @@ class _HomeBodyState extends State<HomeBody>{
   
   @override
   Widget build(BuildContext context){
-    final List<ArticleData> headline = widget.data.take(3).toList();
-    
+    final List<ArticleData> headline = ArticleList.of(context).articles.collections.sublist(0,5);
+
     return Column(
       children: <Widget>[ 
         Container(
@@ -30,7 +26,16 @@ class _HomeBodyState extends State<HomeBody>{
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.bottomLeft,
               child: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0,color: Color(0xffffffff)))
-            )])).toList(), 
+            ),
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: ()=>{Navigator.pushNamed(context, '/article', arguments: headline[_headlineIndex])}
+                )
+              )
+            )
+            ])).toList(), 
             options: CarouselOptions(
               viewportFraction: 1.0,
               autoPlay: true,
@@ -66,11 +71,13 @@ class _HomeBodyState extends State<HomeBody>{
   }
 
   Widget _listBuild(){
+    final List<ArticleData> readMore = ArticleList.of(context).articles.collections.sublist(5);
+    
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(color: Color(0x4D000000)),  
-        itemCount: widget.data.length,
+        itemCount: readMore.length,
          itemBuilder: ((context, index){
-          return _rowBuild(widget.data[index]);
+          return _rowBuild(readMore[index]);
         }) 
     );
   }
@@ -78,7 +85,7 @@ class _HomeBodyState extends State<HomeBody>{
   Widget _rowBuild(ArticleData data){
     return ListTile(
       leading: Container(
-          height: 100,
+          height: 75,
           width: 100,
           child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
@@ -86,7 +93,8 @@ class _HomeBodyState extends State<HomeBody>{
         )
       ),
       title:Text(data.title),
-      subtitle: Text(data.date)
+      subtitle: Text(data.date),
+      onTap: ()=>{Navigator.pushNamed(context, '/article', arguments: data)},
     );
   }
 }

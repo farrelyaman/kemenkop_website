@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'appbar.dart';
-import 'news.dart';
-import 'announcement.dart';
+import 'bodywrap.dart';
 
 class HomeScreen extends StatelessWidget{
   @override
@@ -12,8 +11,8 @@ class HomeScreen extends StatelessWidget{
         appBar: TopBar(),
         body: TabBarView(
           children: <Widget>[
-            News(),
-            Announce()
+            BodyWrapper(choiceIndex:0),
+            BodyWrapper(choiceIndex:1)
           ],
         )
       )
