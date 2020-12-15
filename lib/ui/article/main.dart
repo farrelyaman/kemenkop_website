@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/data_struc.dart';
+import 'package:readmore/readmore.dart';
 
-class ArticleDetail extends StatelessWidget{
-  
+class ArticleDetail extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final ArticleData article = ModalRoute.of(context).settings.arguments;
     print(article.img);
-    
+
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children:<Widget>[
+      body: ListView(
+        children: <Widget>[
           Card(
             clipBehavior: Clip.antiAlias,
             child: Column(
               children: [
                 ListTile(
-                  title: const Text('Lorem Ipsum'),
+                  title: Text(article.title),
                   subtitle: Text(
-                    '12 Desember 2020',
+                    article.date,
                     style: TextStyle(color: Colors.black.withOpacity(0.6)),
                   ),
                 ),
-                Image.asset('images/news-content-img/1a.jpg'),
+                Image.asset(article.img),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed leo libero. Vivamus pulvinar mauris varius ante fringilla, a sollicitudin risus placerat. Duis tempus augue tellus, eu euismod nisi vestibulum quis. Nunc interdum eget nisi sed lobortis. Vestibulum varius, lacus eu pharetra feugiat, mauris massa viverra metus, a dictum ligula nulla eget nulla.',
-                    style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                  padding: EdgeInsets.all(13.0),
+                  child: ReadMoreText(
+                    '\n' + article.desc,
+                    trimLines: 10,
+                    colorClickableText: Colors.blue,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'Read more',
+                    trimExpandedText: 'Show less',
+                    moreStyle:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Divider(
@@ -41,9 +47,9 @@ class ArticleDetail extends StatelessWidget{
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                TextButton(
-                  child: const Text('Source : https://lorem.ipsum.com/'),
-                  onPressed: () {/* ... */},
+                    TextButton(
+                      child: const Text('Source : https://lorem.ipsum.com/'),
+                      onPressed: () {/* ... */},
                     ),
                   ],
                 ),
