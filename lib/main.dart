@@ -1,30 +1,39 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:news_app/data_struc.dart';
-import './ui/homepage/main.dart';
-import './ui/article/main.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
-  runApp(App());
+  runApp(MyApp());
 }
 
-class App extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context){
-    return ArticleList(
-      articles: Articles(<ArticleData>[]),
-      child:MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Color(0xff101010)
-        ),
-        title: "News Template",
-        routes: {
-          '/': (context) => HomeScreen(),
-          '/article': (context) => ArticleDetail()
-        }
-      )
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "News Web View",
+      home: WebViewMain()
     );
   }
 }
 
+class WebViewMain extends StatefulWidget {
+  @override
+  _WebViewMainState createState() => _WebViewMainState();
+}
 
+class _WebViewMainState extends State<WebViewMain> {
+  @override
+  void initState(){
+    super.initState();
+    if(Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return WebView(
+      initialUrl: "http://www.depkop.go.id/"
+    );
+  }
+}
